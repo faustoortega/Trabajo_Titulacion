@@ -10,7 +10,8 @@ switch segment
         data.tk_tau = data.tk_tau + data.h;   % proximo instante de actuacion
         tau = data.tk_tau - t_k;              % calculo tiempo entre la  muestra y la actuacion
   %% Llamada a la senal de control      
-        data.u = task_control(data.xk, tau, data.u_an, data.y_an);%  Tarea de control
+        %data.u = task_control(data.xk, tau, data.u_an, data.y_an);%  Tarea de control
+	data.u = task_control(data,tau)%  Tarea de control
 
         exectime=0.01;        
     case 2
