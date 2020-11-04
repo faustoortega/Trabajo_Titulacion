@@ -11,7 +11,7 @@ data.u = 0;              % señal de control
 data.xk = 0;                 
 data.y_an = 0;           % Salida Anterior
 data.u_an = 0;           % señal de control anterior
-data.tk_tau = 0;        
+data.tk_tau = 0;         % proximo instante de actuacion
 %% Matrices de la Dinamica del Sistema
 data.A = [0 1 ; -918.27 -90.90];   % matris de transicion de estado
 data.B = [0;918.27];               % matris de trancision de control
