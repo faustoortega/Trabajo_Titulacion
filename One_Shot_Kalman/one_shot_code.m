@@ -14,7 +14,7 @@ switch segment
         data.xk = [data.uk;data.u_an];
         
   %% Llamada a la senal de control  
-        [data.u, data.P_pos, data.xk] = control(data.uk, tau_k, data.u_an, data.y_an, data.Q, data.R, data.P_pos,data.xk);%  Tarea de control
+        [data.u, data.P_pos, data.xk] = control(data,tau_k);%  Tarea de control
 
         exectime=0.01;
         

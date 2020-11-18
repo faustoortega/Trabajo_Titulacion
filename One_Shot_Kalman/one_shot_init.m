@@ -13,12 +13,18 @@ data.uk = 0;           % Señal de referencia
 data.y_an = 0;         % Salida Anterior
 data.u_an = 0;         % señal de control anterior
 data.tk_tau=0;         % tiempo entre muestras
+%% Matrices de la Dinamica del Sistema
+data.A = [0 1 ; -918.27 -90.90];   % matris de transicion de estado
+data.B = [0;918.27];               % matris de trancision de control
+data.C = [1 0];
+data.D = 0% matris de salida
+
 
 %% Datos Kalman Filter
 data.Q = 2e-10;      %Covarianza del ruido del poceso
 data.R = 8e-10;      % Covarianza del ruido en la medicion
 data.P_pos = 1e6;
-data.xk=[0 ; 0];
+data.xk = [0 ; 0];
 
 %% creacion de tarea periodica
 ttCreatePeriodicTask('ctrl_task', starttime, period, 'one_shot_code', data)
