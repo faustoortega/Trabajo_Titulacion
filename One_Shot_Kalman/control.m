@@ -3,7 +3,8 @@ function [u, P_pos, xk] = control(data,t)
 sys = ss(data.A,data.B,data.C,data.D);
 %% Ubicacion de los polos
 p = [ 5+5*i -5-5*i];  
-L = acker(sys.A,sys.B,p);
+%L = acker(sys.A,sys.B,p);
+L = dlqr(sys.A,sys.B,eye(2), data.R);
 
 %% ONE-SHOT KALMAN
 % calculo de las matrices de la dinamica del sistema en t
