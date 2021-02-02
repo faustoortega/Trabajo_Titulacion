@@ -9,7 +9,7 @@ data.h = 0.05;          % periodo
 %% Inicializacion Variables de Datos One-Shoot
 data.u = 0;              % señal de control
 data.xk = 0;                 
-data.y_an = 0;           % Salida Anterior
+data.y = 0;           % Salida Anterior
 data.u_an = 0;           % señal de control anterior
 data.tk_tau = 0;         % proximo instante de actuacion
 %% Matrices de la Dinamica del Sistema
