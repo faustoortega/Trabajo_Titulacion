@@ -1,0 +1,55 @@
+\section{Filtro de Kalman}
+\begin{normalsize}
+El filtro de Kalman es un algoritmo que se basa en el modelo de espacio de estados de un sistema (ecuación \ref{ecuacion_1.11}) para estimar el estado futuro y la salida futura realizando un filtrado óptimo a la señal de salida, y dependiendo del retraso de las muestras que ingresan puede cumplir la función de estimador de parámetros o únicamente de filtro.
+Pero en ambos casos elimina ruido, estas ecuaciones son ampliamente utilizadas ya que incluyen probabilidades estadísticas puesto que toma en cuenta la aleatoriedad tanto de la señal como del ruido. 
+
+\begin{equation}
+\begin{split}
+     x(t)&=Ax(t)+Bu(t) \\
+     y(t)&=Cx(t) \label{ecuacion_1.11}
+\end{split}
+\end{equation}
+En \cite{17} se utiliza el filtro kalman como estimador sobre un sistema de segundo orden. Este sistema esta definido por el modelo en espacio de estados. Además presenta ruido en la medición y el entorno físico asociado. Por este motivo la señal de control se ve degradada. 
+
+El filtro de Kalman estima un proceso usando una forma de realimentación y control: el filtro estima el estado del proceso en un tiempo y después obtiene la realimentación en forma de mediciones (ruidosas). Las ecuaciones del filtro de Kalman caen en dos grupos: ecuaciones de actualización de tiempo(Predicción) y ecuaciones de actualización de mediciones(Corrección). 
+
+Las ecuaciones de medición el tiempo son responsables de proyectar hacia adelante (en el tiempo) el estado actual y estimaciones de error y covarianza para obtener los estimados a priori del siguiente paso en el tiempo.
+
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.7\textwidth]{kalman.png}
+    \caption{Funcionamiento del filtro de kalman}
+    \label{fig:1.4}
+}
+\end{figure}
+
+El filtro de Kalman es por mucho el mejor estimador (óptimo) posible para un gran conjunto de problemas y un estimador muy eficiente y útil para un conjunto aún mayor. Con algunas herramientas conceptuales, el filtro de Kalman se vuelve muy fácil de usar.
+
+Se propusieron varios algoritmos del filtro de Kalman para derivar la estimación del estado óptimo en los últimos  años. En \cite{18} analisan los desarrollos recientes sobre el filtro Kalman (KF), el filtro Kalman extendido (EKF) y el filtro Kalman Unscented  (UKF). 
+
+\subsection{Aplicación del Filtro de Kalman en sistemas con ruido }
+
+El filtro de Kalman aplicado a una planta controlada en tiempo discreto proporciona una estimación óptima de sus estados. La información que usa proviene de dos fuentes: desde mediciones hechas a través de los sensores y desde estimaciones realizadas usando el modelo del sistema. Mezcla estos dos recursos de información de manera óptima considerando las descripciones probabilísticas de su exactitud, es decir, la precisión de los sensores y del modelo\cite{19}.
+
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.9\textwidth]{filtro_Kalman.png}
+    \caption{Filtro de kalman ante una señal con ruido}
+    \label{fig:1.4}
+}
+\end{figure}
+
+El problema de la estimación de la señal se trata de recuperar algunas variables deseadas de un sistema dinámico a partir de las mediciones disponibles. Un método de estimación para este problema es el denominado filtrado de Kalman en tiempo discreto. Este enfoque de filtrado se ha utilizado con éxito en muchos problemas de ingeniería\cite{20}.
+
+\subsubsection{Filtro de Kalman en tiempo discreto}
+En \cite{20} consideran un diseño del filtro de Kalman para sistemas lineales de tiempo discreto con incertidumbre de parámetros limitada por normas en las matrices de estado y salida. Donde suponen que los ruidos de proceso y medición son señales blancas estacionarias con características conocidas. El problema en el diseño de un filtro se encuentra en garantizar que la varianza del error de filtrado está dentro de un cierto límite para todas las incertidumbres admisibles de los parámetros. El interés esta en el diseño de  un filtro Kalman robusto que tenga la estructura esencial de un filtro Kalman estándar pero con las modificaciones necesarias para tener en cuenta la incertidumbre.
+
+La implementación de un filtro de Kalman de tiempo discreto es
+sencillo si se garantiza un muestreo estrictamente periódico.  La integración de un filtro de Kalman con \cite{1} plantea algunos problemas que requieren un mejor análisis.
+El algoritmo de filtro de Kalman tiene dos fases que son predicción y corrección. La corrección debe tener lugar en el instante de muestreo, ya que requerimos una medición de proceso para ejecutar la corrección. Sin embargo, en \cite{1} realiza la sincronización en los instantes de actuación y se acepta que el muestreo no es periódico. Además, utiliza una diferencia de tiempo para estimar el estado en el instante de actuación, además de las estimaciones y predicciones requeridas por el algoritmo de filtro de Kalman. Al considerar estos aspectos, en \cite{21} presenta dos enfoques diferentes para introducir un filtro de Kalman con el modelo de tarea control presentado en \cite{1}. El primer enfoque implementa la corrección de Kalman solo desde el muestreo hasta los instantes de actuación, y el segundo enfoque considera el intervalo de muestreo completo para implementar el algoritmo de Kalman\cite{21}.
+
+
+
+

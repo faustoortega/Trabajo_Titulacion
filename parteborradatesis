@@ -1,0 +1,345 @@
+\section{Espacio de Estados}
+\begin{normalsize}
+
+ El uso de la notación matricial simplifica enormemente la representación matemática de los sistemas de ecuaciones. El incremento en el numero de variables de estado, de entradas o de salidas no aumenta la complejidad de las ecuaciones.
+De hecho, el análisis de sistemas complicados con múltiples entradas y salidas se realiza mediante procedimientos solo ligeramente mas complicados que los requeridos para el análisis de sistemas de ecuaciones diferenciales escalares de primer orden\cite{8}.
+
+\subsection{Modelado en el Espacio de Estados}
+
+\begin{normalsize}
+El espacio n-dimensional cuyos ejes de coordenadas están formados por el eje $x_{1}$ , eje $x_{2}$ , ..., eje $x_{n}$ , donde $x_{1} , x_{2} , ..., x_{n}$ son las variables de estado, se denomina espacio de estados. Cualquier estado se puede representar como un punto en el espacio de estados\cite{8}.
+\end{normalsize}
+
+\subsubsection{Ecuaciones en el espacio de estado}
+\begin{normalsize}
+En el análisis en el espacio de estados se centra la atención en los tres tipos de variables que aparecen en el modelado de los sistemas dinámicos; las variables de entrada, las variables de salida y las variables de estado. El sistema dinámico debe contener elementos que recuerden los valores de la entrada para $t \geq t_{1}$ . Puesto que los integradores en un sistema de control en tiempo continuo sirven como dispositivo de memoria, las salidas de tales integradores se pueden considerar como las variables que describen el estado interno del sistema dinámico. Así las salidas de los integradores sirven como variables de estado. El número de variables de estado para definir completamente la dinámica del sistema es igual al número de integradores que aparezcan en el mismo\cite{8}.
+
+El modelo en espacio de estados que representa cualquier tipo de planta es dado por las siguientes ecuaciones:
+\begin{equation}
+    x_(t) = A(t)x(t) + B(t)u(t) \label{ecuacion_2.1}
+\end{equation}
+\begin{equation}
+y(t) = C(t)x(t)\label{ecuacion_2.2}
+\end{equation}
+donde $A(t)$ se denomina matriz de estado, $B(t)$ matriz de entrada y  $C(t)$ matriz de salida directa\cite{8}.
+
+\end{normalsize}
+\subsection{Observabilidad y Controlabilidad de un Sistema}
+\begin{normalsize}
+Los conceptos de controlabilidad y observabilidad fueron introducidos por R. E. Kalman. Tienen un papel importante en el control óptimo de sistemas multivariables. De hecho, las condiciones de controlabilidad y observabilidad pueden hacer posible la existencia de una solución completa
+a un problema de control óptimo\cite{9}.
+\end{normalsize}
+\subsubsection{Controlabilidad}
+\begin{normalsize}
+Se dice que un sistema de control es de estado completamente controlable, si es posible transferir el sistema de un estado inicial arbitrario a cualquier estado deseado (también un estado arbitrario), en un periodo finito. Es decir, un sistema de control es controlable si todas las variables de estado
+pueden ser controladas en un periodo finito, mediante alguna señal de control no restringida. Si cualquiera de las variables de estado es independiente de la señal de control, entonces resulta imposible controlar esa variable de estado y, por lo tanto, el sistema es no controlable.
+Puede no existir solución a un problema de control óptimo, si el sistema se considera no controlable. A pesar de que la mayor parte de los sistemas físicos son controlables, los modelos
+matemáticos correspondientes quizás no tengan la propiedad de controlabilidad. Por lo tanto, es necesario saber la condición bajo la cual el sistema es controlable.
+
+La controlabilidad se ocupa del problema de poder dirigir un sistema de un estado inicial dado, a un estado arbitrario. Un sistema es controlable si puede, mediante un vector de control no acotado, transferir dicho sistema de cualquier estado inicial a cualquier otro estado, en un número finito de periodos de muestreo. (Por lo tanto, el concepto de controlabilidad trata de la existencia de un vector de control que puede causar que el estado del
+sistema llegue a algún estado arbitrario.)\cite{9}\\
+
+Consideremos el sistema de control e tiempo discreto definido por
+\begin{equation}
+    x((k+ 1)T) = Gx(kT) + Hu(kT) \label{ecuacion_2.3}
+\end{equation}
+
+$x(k7) =$ vector estado (de dimensión 11) en el k-ésimo instante de muestreo
+$u(k7) =$ señal de control en el k-ésimo instante de muestreo
+$G =$ matriz de $n*n$
+$H = $matriz de $n*1$
+$T =$ período de muestreo
+Suponemos que $u(kT)$ es constante para $kT \leq t < (k + T)T.$
+El sistema de control en tiempo discreto dado por la ecuación \eqref{ecuacion_2.3} se dice es de estado completamente controlable, o simplemente de estado controlable, si existe una señal de control constante por intervalos $u/(kT)$ definida a lo largo de un número finito de períodos de muestreo de forma que, al
+partir de cualquier estado inicial, el estado $x(kT)$ pueda ser transferido al estado deseado $x_{f}$ en n
+períodos de muestreo como máximo\cite{9}.\\
+
+
+
+La condición necesaria y suficiente para que un sistema de orden n definido por su modelo de estado
+\begin{equation}
+  x(t)=Ax(t) + Bu(t)\label{ecuacion_2.4}
+\end{equation}
+
+\begin{equation}
+    y(t) =Cx(t) + Du(t)\label{ecuacion_2.5}   
+\end{equation}
+sea completamente controlable, es que la siguiente matriz, denominada de controlabilidad, tenga rango $2n$, (la misma se suele llamar $Mc$ o simplemente $S$ )\cite{10} :
+\begin{equation}
+    S = ( B\hspace{2mm}  AB\hspace{2mm}   A^{2} B\hspace{2mm}  ...\hspace{2mm}  A^{n-1}\hspace{2mm}  B )\label{ecuacion_2.6}
+\end{equation}
+
+\end{normalsize}
+\subsubsection{Observabilidad}
+\begin{normalsize}
+El concepto de observabilidad se fundamenta en la posibilidad de conocer el estado de un sistema a partir del conocimiento de la evolución de su entrada y de su salida.
+La observabilidad en términos generales se define del siguiente modo:\\
+
+Un punto del espacio de estado $x(t_{0})$ es observable, si existe un intervalo de tiempo finito $[t_{0},t_{f}]$
+tal que si se conoce la entrada $u(t)$ y la salida $y(t)$ en ese intervalo, $t_{0}\leq t \leq t_{f}$ , es posible determinar que
+el estado inicial era $x(t_{0})$.\cite{10}.\\
+
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.5\textwidth]{observabilidad.png}
+    \caption{Estimación del vector de estado a partir del conocimiento de la entrada y la salida}
+    \label{fig:2.4}
+}
+   
+\end{figure}
+
+La observabilidad se ocupa del problema de determinar el estado de un sistema dinámico a partir de observaciones de los vectores de salida y de control en un número finito de períodos de muestreo. Un sistema es observable si, con el sistema en el estado $x(O)$, se puede determinar el estado a partir de la observación de los vectores de salida y de control a lo largo de un número finito de periodos de muestreo\cite{9}.
+
+Considere el sistema de control en tiempo discreto sin excitación definido por la ecuacion \eqref{ecuacion_2.3}
+\begin{equation}
+    x((k+1)T)= Gx(kT) 
+\end{equation}
+\begin{equation}
+   y(kT) = Cx(kT)  
+\end{equation}
+donde
+$x(kT)=$ vector de estado (de dimensión n) en el k-esimo instante de muestreo
+$y(kT) =$ vector de salida (de dimensión m) en el k-esimo instante de muestreo
+$G =$ matriz de $n x n$
+$e =$ matriz de $m x n$
+
+El sistema se dice ser completamente observable si cualquier estado inicial $x(0)$ puede determinarse a partir de la observación de $y(kT)$ sobre un número finito de períodos de muestreo. El sistema, por lo tanto, es completamente observable, si cualquier transición del estado de manera eventual afecta a todos los elementos del vector de salida\cite{9}.
+\end{normalsize}
+
+
+\end{normalsize}
+\section{Control por Realimentación de Estados }
+
+\section{Estrategias de Diseño }
+\begin{normalsize}
+El concepto de controlabilidad es la base para solucionar el problema de la ubicación de polos y el concepto de observabilidad juega un papel importante para el diseño de los observadores de estado. La realimentación de estado basada en la ubicación de polos, junto con los observadores de estado, es uno de los métodos de diseño fundamentales para los ingenieros de control. Si el sistema es de estado completamente controlable, entonces es posible seleccionar polos en lazo cerrado deseados en el plano 's' o en el plano 'z' (o las raíces de la ecuación característica) y se podrá diseñar el sistema que proporcione estos polos en lazo cerrado"
+
+El método de diseño a utilizarse es el conocido como técnica de asignación de polos, es decir, en dicha técnica se realimentan todas las variables de estado, de tal forma que todos los polos del sistema en lazo cerrado quedan ubicados en las localizaciones deseadas. En los sistemas reales de control, sin embargo, quizá no se puedan medir todas las variables de estado, en cuyo caso no todas las variables de estado están disponibles para su realimentación, entonces es
+necesario estimar las variables de estado no medibles. Esta estimación puede ser realizada mediante el uso de los observadores de estado\cite{11}.
+\end{normalsize}
+\subsection{Técnica de Asignación de Polos}
+\begin{normalsize}
+La presente técnica de diseño empieza con una determinación de los polos en lazo cerrado deseados, basados en los requisitos de respuesta transitoria y/o respuesta en frecuencia como velocidad, factor de amortiguamiento relativo o ancho de banda. Una vez hechas estas consideraciones, suponga que decidimos que los polos en lazo cerrado deseados deben estar en $z = p" z = p" .. . , z = Pw$ (En la selección del periodo de muestreo, se debe tener cuidado de que el sistema deseado no requiera señales de control excesivamente grandes. De lo contrario, ocurrirán fenómenos de saturación en el sistema. Si éste entra en saturación, se volverá no lineal, por lo que tal método de diseño ya no será aplicable, en vista de que solamente lo es para sistemas lineales e invariantes en el tiempo.) Entonces, al seleccionar una matriz de ganancia apropiada para la realimentación del estado, es posible
+obligar al sistema a tener los polos en lazo cerrado en las posiciones deseadas, siempre y cuando el sistema original sea de estado completamente controlable\cite{9}.\\
+
+\subsubsection{Procedimiento general de diseño por asignación de polos}
+
+Si bien la condición de controlabilidad se ha demostrado para el caso más general, esto es, un sistema MIMO en el que tanto la señal de entrada $u(t)$ como la de salida $y(t)$ son vectores, el cálculo de la matriz de realimentación K se vuelve mucho más complicado cuando el control es multivariable que cuando se trata de mono-variable. El control multivariable excede las pretensiones de este texto, por lo
+cual, en los diseños que siguen, se considerarán sistemas SISO exclusivamente. Sea pues el sistema SISO de control por ubicación de polos mediante la realimentación de estado que se muestra en la figura \ref{fig:2.2}
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.5\textwidth]{planta.png}
+    \caption{Sistema de control por realimentación de estado}
+    \label{fig:2.5}
+}
+   
+\end{figure}
+La planta está modelada por las ecuaciones de estado siguientes:
+\begin{equation}
+ x(t)=Ax(t)+Bu(t)\label{ecuacion_2.9}
+\end{equation}
+\begin{equation}
+  y(t)=Cx(t)\label{ecuacion_2.10}  
+\end{equation}
+
+
+La señal de control está dada por la relación
+\begin{equation}
+ u(t)= -Kx(t)+r(t)\label{ecuacion_2.11}   
+\end{equation}
+en donde 
+\begin{equation}
+ K=(k_{1}\hspace{2mm} k_{2}\hspace{2mm} ...\hspace{2mm} k_{n}\hspace{2mm})\label{ecuacion_2.12}
+\end{equation}
+
+Sustituyendo en la ecuación \eqref{ecuacion_2.9} el valor dado de $u(t)$ en \eqref{ecuacion_2.11}, se tiene que el modelo de estado del sistema en lazo cerrado es:
+\begin{equation}
+    x(t)=Ax(t)+B[-Kx(t)+r(t)]\label{ecuacion_2.13}
+\end{equation}
+
+Ahora, aplicando la transformada de Laplace a las ecuaciones \eqref{ecuacion_2.13} y \eqref{ecuacion_2.10} con condiciones iniciales
+nulas:
+\begin{equation}
+  X(s)=(sI-A+BK)^{-1}BR(s)\label{ecuacion_2.14}  
+\end{equation}
+\begin{equation}
+   Y(s)=CX(s)\label{ecuacion_2.15}
+\end{equation}
+
+Sustituyendo \eqref{ecuacion_2.14} en \eqref{ecuacion_2.15} se obtiene la función de transferencia del sistema en lazo cerrado:
+\begin{equation}
+  \frac{Y(s)}{R(s)}=C(sI-A+BK)^{-1}B  
+\end{equation}
+
+
+Esto es,
+\begin{equation}
+ \frac{Y(s)}{R(s)}=\frac{Q(s)}{|sI-A+BK|}   
+\end{equation}
+
+
+donde $Q(s)$ es un polinomio en $s$.
+
+Se ve pues que los polos en lazo cerrado del sistema se pueden ubicar libremente mediante el ajuste de los elementos de la matriz de ganancia de realimentación de estado $K$.\\
+
+Sean pues las posiciones de los polos deseadas
+\begin{equation}
+   s=p_{1},p_{2}, ... ,p_{n} 
+\end{equation}
+
+con lo cual la ecuación característica del sistema es
+\begin{equation}
+    sI-A+BK = (s-p_{1})(s-p_{2}) ... (s-p_{n} ) = 0\label{ecuacion_2.19}
+\end{equation}
+
+
+En esta ecuación hay $n$ incógnitas $k_{1}$ , $k_{2}$ , ..., $k_{n}$ y n coeficientes conocidos en la parte derecha de la igualdad de polinomios. Para calcular las ganancias desconocidas basta con igualar los coeficientes en \eqref{ecuacion_2.19}
+\end{normalsize}
+
+
+\subsection{Regulador Cuadrático Lineal LQR}
+\begin{normalsize}
+
+El regulador cuadrático lineal para sistemas en espacio de estados en tiempo continuo o discreto nos permite calcular la matriz de ganancia óptima $K$ la cual aplicando la ley de control por retroalimentación de estados $u = -Kx$ minimiza la función de costo $J $
+\begin{equation}
+    J = \int_{0}^\infty(x^{T}Qx + u^{T}Rx )dt \label{ecuacion_2.20}
+\end{equation}
+
+donde $Q$  y $R$ son matrices de ponderación que priorizan el error en los estados y el error en la entrada respectivamente.
+
+Para reducir la función de costo se realiza el cálculo de la matriz de polos en laso cerrado $P$ por medio de la ecuación de Ricattti: 
+
+\begin{equation}
+    A^{T}P + P*A - PBR^{-1}B^{T}P + Q=0
+\end{equation}
+
+%\begin{equation}
+%    J = \sum_{n=1}^\infty\{x^{T}Qx + u^{T}Rx \}
+%\end{equation}
+
+\end{normalsize}
+
+\section{Filtro de Kalman}
+\begin{normalsize}
+El filtro de Kalman es un algoritmo muy poco común, ya que es uno de los pocos que son demostrablemente óptimos. Fue publicado por primera vez por Rudolf E. Kalman en su artículo seminal de 1960 titulado A New Approach to Linear Filtering and Prediction Problems. Dado que es óptimo, se ha mantenido relativamente sin cambios desde que se introdujo por primera vez, pero ha recibido muchas extensiones para aplicarlo a más que sistemas gaussianos lineales\cite{12}.  
+
+El filtro de Kalman es un algoritmo que se basa en el modelo de espacio de estados de un sistema para estimar el estado futuro y la salida futura realizando un filtrado óptimo a la señal de salida, y dependiendo del retraso de las muestras que se le ingresan puede cumplir la función de estimador de parámetros o únicamente de filtro. Pero en ambos casos
+elimina ruido, estas ecuaciones son ampliamente utilizadas ya que incluyen probabilidades estadísticas puesto que toma en cuenta la aleatoriedad tanto de la señal como del ruido. A diferencia de otros tipos de filtros este no requiere de una frecuencia de corte específica debido a que se basa en la característica del ruido permitiendo de esta manera filtrar en todo el espectro de frecuencias. Además sus ecuaciones solo dependen de una muestra anterior y la muestra presente lo que permite un ahorro considerable de memoria a la hora de ser implementado en un sistema digital y su fácil programación lo hacen muy atractivo ya que se basa en un método recursivo.\\
+
+Entre varias de sus aplicaciones se encuentran la estimación demográfica, procesamiento de señales biológicas, sistemas de navegación, predecir el comportamiento de variables económicas, procesamiento de imágenes,aeronáutica, el procesamiento de señales y el comercio de futuros entre otras. Debido a su gran campo de acción se hace muy importante conocer su funcionamiento para así tener las herramientas básicas que permitan la solución de diversos problemas prácticos de forma sencilla y óptima\cite{13}.
+
+\subsection{Ruido en el Proceso y  Medición}
+\begin{normalsize}
+
+Se considera el caso común de medidas ruidosas de un sensor. Existen muchas fuentes de ruido en las mediciones. Por ejemplo cada tipo de sensor tiene sus limitaciones fundamentales relacionadas con el medio físico asociado, por esta razón las señales se ven degradadas. Además alguna cantidad de ruido eléctrico aleatorio es sumado a la señal a través del sensor y los circuitos eléctricos. La continua variación de la relación de la señal pura con relación al ruido afecta continuamente la cantidad y la calidad de la información. El resultado es que la información obtenida desde cualquier sensor debe ser calificada como parte de una secuencia de datos estimados, y medidas analíticas modeladas que comúnmente involucran medidas de ruido y de incertidumbre.\\
+
+Existe el problema adicional de que el modelo de transformación de estados real sea completamente desconocido. Mientras se puedan hacer predicciones sobre intervalos relativamente cortos, usando modelos basados en transformadas de estados recientes, que no es siempre el caso, el resultado es que igual que la información del sensor, las
+estimaciones del estado deben ser calificadas como mediciones para combinación con otras medidas en una secuencia global de estimación. Además, los modelos del proceso típicamente incorporan algunas nociones de movimiento aleatorio o incertidumbre\cite{13} .
+
+\end{normalsize}
+\subsection{Filtro de Kalman Discreto}
+\begin{normalsize}
+El filtro de Kalman es esencialmente una serie de ecuaciones matemáticas que implementan un estimador tipo predictor–corrector que es óptimo en el sentido que minimiza el error estimado de la covarianza, cuando algunas condiciones son dadas. Desde el momento de su introducción, el filtro de Kalman ha sido sujeto de investigación autónoma o asistida. Esto es debido a que en gran parte de los avances en la computación digital se ha trabajado  para hacer el filtro práctico, pero relativamente simple y robusto. Aunque no siempre se presentan todas las condiciones óptimas para el funcionamiento del filtro, éste se desempeña bien en la mayoría de situaciones.\\
+
+El filtro de Kalman apunta al problema general de tratar de
+estimar el estado $X \in \mathbb{R}^{n}$ de un proceso controlado en tiempo
+discreto \cite{13}.
+\begin{equation}
+    x_{k}=Ax_{k-1} + Bu_{k} + W_{k-1} \label{ecuacion_2.22}
+\end{equation}
+Con una medición $Z \in \mathbb{R}^{n}$
+\begin{equation}
+    z_{k} = Hx_{k} + V_{k} \label{ecuacion_2.23}
+\end{equation}
+
+Las variables aleatorias $W_{k}$ y $V_{k}$ representan respectivamente
+el ruido del proceso y de la medición. Se asumen que son
+independientes una de la otra, blancas y con distribución
+normal de probabilidad.
+
+\begin{equation}
+    p(W)~N(0,Q)\label{ecuacion_2.24}
+\end{equation}
+\begin{equation}
+    p(V)~N(0,R)\label{ecuacion_2.25}
+\end{equation}
+En la práctica la covarianza del ruido del proceso Q y la covarianza del ruido de la medición $R$ son matrices que pueden cambiar con cada paso en el tiempo o medición, sin embargo se asumen que son constantes. La matriz $A$ de $nxn$ en la ecuación en diferentes relaciona el estado en el paso anterior $k-1$ con el estado actual, en ausencia de función de conducción o ruido del proceso. Nótese que en la práctica A puede cambiar con cada paso del tiempo, pero aquí se asume constante. La matriz $B$ de $nx1$ se relaciona con la entrada opcional de control $u  \in \mathbb{R}^{n}$ al estado $x$. La matriz $H$ de $mxm$ en la ecuación en diferencia de la medición, relaciona el estado con la medición. En la práctica la matriz $H$ puede cambiar con cada paso del tiempo, pero aquí se asume
+constante\cite{13}.
+\end{normalsize}
+
+\subsubsection{Suposiciones del Filtro de Kalman}
+\begin{normalsize}
+El filtro de Kalman viene con varias suposiciones:\\
+
+1. La transición de estado es lineal en la forma:
+\begin{equation}
+    x_{k}=Ax_{k-1} + Bu_{k} + W_{k}\label{ecuacion_2.26} 
+\end{equation}
+donde $x_{k}$ es el estado, $u_{k}$ es el control y $w_{k}$ es el ruido gaussiano añadido.\\
+
+2. La medida es lineal en la forma:
+\begin{equation}
+    z_{k} = Hx_{k} + V_{k}\label{ecuacion_2.27}
+\end{equation}
+donde $z_{k}$ es la observación y $V_{k}$ el ruido gaussiano.\\
+
+3. El sistema es continuo.\\
+
+Si bien estas suposiciones restringen la aplicabilidad del filtro de Kalman, también aseguran su optimización.
+
+El algoritmo está estructurado en formato predictor-corrector. La idea general es proyectar el estado hacia adelante, utilizando una función de transición de estado. Luego, este estado se corrige incorporando una medida de las cantidades observables del sistema.
+
+\end{normalsize}
+\section{Filtro de Kalman Discreto}
+\begin{normalsize}
+El algoritmo se puede dividir en dos fases distintas: una fase de predicción y una fase de actualización de la medición o corrección.
+\subsubsection{Fase de Predicción}
+
+En la fase de Predicción, el estado se proyecta hacia adelante usando la ecuación \eqref{ecuacion_2.26}. 
+\begin{equation}
+    \hat{x}\hspace{1mm}\bar{}_{k}=A\hat{x}_{k-1} + Bu_{k}\label{ecuacion_2.28} 
+\end{equation}
+Sin embargo, también debemos propagar la incertidumbre en el estado. Dado que el estado es una distribución gaussiana y está completamente parametrizado por una  covarianza $P_{k}$, podemos actualizar la covarianza como en la ecuación \eqref{ecuacion_2.29} 
+\begin{equation}
+    P\hspace{1mm}\bar{}_{k} = AP_{k}A^{T}+Q \label{ecuacion_2.29}
+\end{equation}
+Aquí, A es la misma matriz utilizada para propagar la media del estado y Q es ruido gaussiano aleatorio. Esto concluye la fase de actualización de la hora y representa el paso de predicción del algoritmo. 
+
+\subsubsection{Fase de Corrección}
+
+La fase de corrección del filtro de Kalman, es el paso de actualización de la medición , en el que se realiza una medición de una variable observable y se fusiona con la distribución anterior para estimar la posterior. Primero, hacemos una medición del sistema usando nuestro modelo de medición lineal en la Ecuación \eqref{ecuacion_2.27}. Después de realizar la medición, formamos lo que se conoce como la Ganancia de Kalman, representada en la Ecuación \eqref{ecuacion_2.30}. Este es el paso clave del Filtro de Kalman. 
+
+\begin{equation}
+    K=PH^{T}(HPH^{T}+Q)^{-1} \label{ecuacion_2.30}
+\end{equation}
+
+
+A continuación calculamos la diferencia entre la observación esperada y la observación real, también conocida como innovación: 
+
+\begin{equation}
+    \hat{z} = (z_{k} - H\hat{x}\hspace{1mm}\bar{}_{k}) \label{ecuacion_2.31}
+\end{equation}
+
+Haciendo uso de las ecuaciones \eqref{ecuacion_2.30} y \eqref{ecuacion_2.31} podemos calcular la distribución posterior:
+
+\begin{equation}
+    \hat{x}_{k}=\hat{x}\hspace{1mm}\bar{}_{k} + K_{k}\hat{z}\label{ecuacion_2.32}
+\end{equation}
+
+también la podemos expresar como:
+\begin{equation}
+    \hat{x}_{k}=\hat{x}\hspace{1mm}\bar{}_{k} + K_{k}(z_{k} - H\hat{x}\hspace{1mm}\bar{}_{k})
+    \label{ecuacion_2.33}
+\end{equation}
+
+Lo próximo a realizar es la corrección de la covarianza:
+
+\begin{equation}
+    P_{k}=(I-K_{k}H)P\hspace{1mm}\bar{}_{k}
+\end{equation}
+
+Aquí, $\hat{x}_{k}$ y $P_{k}$ parametrizan completamente la distribución posterior. Los pasos anteriores representan una única iteración del filtro de Kalman. Esta salida se utiliza luego como entrada para una observación posterior, junto con un nuevo control y observación\cite{12}.
+
+\end{normalsize}

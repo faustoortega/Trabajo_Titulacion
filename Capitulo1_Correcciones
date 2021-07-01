@@ -1,0 +1,245 @@
+\section{Control Automático}
+\begin{normalsize}
+Control Automático es una disciplina aplicada a la Ingeniería de Procesos, que ha evolucionado a gran velocidad. El intensivo uso del control automático a dado origen a t\'ecnicas de medición y control las cuales son muy aplicadas en el ambiente industrial.
+
+Un computador dedicado al control de procesos realiza funciones de control y supervisión. En este tipo de aplicaciones comparte sus recursos entre un cierto numero de funciones de supervisión y control en un tiempo estricto de ejecución (hard-real-time), con un flujo de otras funciones las cuales su tiempo de ejecución no es estrictamente critico(soft-real-time) donde una distribución estadística de los tiempos de respuesta es aceptable. En determinadas aplicaciones, no existen trabajos que no sean de tiempo de ejecución estricto y el uso eficiente del computador se puede lograr mediante una cuidadosa programación de las funciones de control\cite{8}.  
+
+La eliminación parcial del error en los procesos y un aumento considerable en la seguridad de los sistemas controlados aplicando técnicas de control, son puntos importantes que destacan en su aplicación en la industria.
+
+A diferencia del control clásico , el procesador es la herramienta principal de un sistema de control moderno, el cual permite afrontar problemas tanto SISO(single-output single-input) y MIMO(multiple-input y multiple-output), dado que su análisis se realiza en la representación en espacio de estados de un sistema y el principio de realimentación de estados o feedback, esta operación permite al controlador mantener actualizado con la información de las variables de estado, con esta información realiza correcciones al proceso cuando sea necesario.   
+\end{normalsize}
+
+\section{Tareas de Control}
+\begin{normalsize}
+En la teoría de control, el muestreo y la actuación se asumen sincrónicos y periódicos, y se considera un cumplimiento preciso en su implementación. Cuando un algoritmo de control es ejecutado por una tarea (o por un conjunto de subtareas) en un sistema multitarea en tiempo real, esas suposiciones no se cumplen. Esto provoca una degradación del rendimiento del control e incluso inestabilidad. Además, el algoritmo de programación puede restringir el sistema cuando intenta cumplir con las estrictas restricciones de tiempo que exige la teoría de control, lo que da como resultado una programación deficiente\cite{9}.
+
+Una tarea de  control se basa en tres partes principales: lectura de datos desde los sensores, cálculo del algoritmo de control y transmisión de salida. En la mayoría de los casos, el control se ejecuta de forma periódica, con un período de muestreo constante determinado por la dinámica del proceso y los requisitos sobre el rendimiento del lazo cerrado. Las restricciones de tiempo básicas de una Tarea de control se muestran en la figura \ref{fig:1.1}. La primera es el período que debe ser constante, es decir, sin fluctuación. La segunda restricción involucra la latencia de entrada-salida, también conocida como retardo de control. Esto debe ser lo más pequeño posible y también sin fluctuaciones. Desde una perspectiva de control, la fluctuación de fase de muestreo y actuación  pueden ser interpretadas como perturbaciones que actúan sobre el sistema de control\cite{3}.
+
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.7\textwidth]{Restricciones_de_tiempo.jpeg}
+    \caption{Restricciones de Tiempo}
+    \label{fig:1.1}
+}
+\end{figure}
+ La latencia que se encuentra en la  entrada y salida del sistema  disminuye el margen de estabilidad y limita el rendimiento del mismo.
+ 
+ Al utilizar estrategias de control adecuadas que tengan en cuenta estos requerimientos, el rendimiento del sistema puede mejorar drásticamente. Utilizando plenamente las estrategias de diseño de control mas adecuadas, el algoritmo de programación tendrá en algún momento que proporcionar información para cada instante de la tarea de control. Además, estas estrategias de diseño de control proporcionarán nuevas restricciones para cada instancia de la tarea de control, lo que permitirá una mejor programación de todo el conjunto de tareas (tareas de control y de no control)\cite{9}.
+
+
+\subsection{Controladores Estándar}
+Los algoritmos de control estándar al implementarse como tareas periódicas  en tiempo real se considera un período de tarea igual al período de muestreo. Las operaciones de muestreo (entrada) y actuación (salida) se especifican para que ocurran al principio y al final de cada ejecución de trabajo\cite{1}.
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.6\textwidth]{controlEstandar.png}
+    \caption{Controlador Estándar}
+    \label{fig:1.2}
+}
+\end{figure}
+
+El muestreo debe realizarse en el mismo instante cada período (h), lo que significa un período de muestreo constante. El calculo del algoritmo de control debe comenzar y terminar tan pronto como sea posible después de que la muestra esté disponible. La actuación debe realizarse inmediatamente después del cálculo del algoritmo, o en un instante fijo después del muestreo, lo que significa un intervalo de actuación constante (dependiendo de cómo se diseñó el controlador). De esta forma las partes de un bucle de control(muestreo, calculo, actuación) se suponen instantáneas, como se muestra en la figura \ref{fig:1.3}
+
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.6\textwidth]{seuenciaControlIdeal.png}
+    \caption{Secuencia de control Ideal}
+    \label{fig:1.3}
+}
+\end{figure}
+Este enfoque de tarea de control puede violar uno o mas de estos supuestos, cuando programamos un sistema multitarea en tiempo real debido a retardos o latencias introducidas, el muestreo no puede ser constante. El cálculo del algoritmo de control puede comenzar más tarde que el instante en el que la muestra está disponible y el cálculo del algoritmo de control
+puede no ser instantáneo e incluso tener un tiempo de cálculo variable.
+En la realidad existen retardos de muestreo lo cual implica que la separación entre muestras consecutivas no sea constante. Para evitar la degradación que introducen estos retardos de muestreo, podemos compensar utilizando estrategia de control mas adecuadas como proponen en \cite{9}. 
+
+\end{normalsize}
+
+\subsection{Control por retardo de tiempo (time delay control-TDC)}
+\begin{normalsize}
+La mayor parte de la teoría de control desarrollada, ya sea en el dominio de la frecuencia o en el dominio del tiempo, trata de sistemas cuyas representaciones matemáticas son completamente conocidas. Sin embargo, en muchas situaciones prácticas, los parámetros del sistema son poco conocidos o funcionan en entornos donde son posibles grandes variaciones impredecibles de los parámetros del sistema y perturbaciones inesperadas. Al aplicar el control de retroalimentación, la presencia de dinámica no modelada da como resultado oscilaciones indeseables, afecta la estabilidad general y conduce a un rendimiento de control limitado. En tal situación, los controladores comunes con ganancia fija  pueden ser inadecuados para lograr un desempeño satisfactorio en todo el rango sobre el cual las características del sistema varían. Por lo tanto, un enfoque para diseñar un controlador robusto para sistemas inciertos es estimar el efecto de las incertidumbres y las perturbaciones que actúan sobre el sistema y compensarlo\cite{10}.
+
+El control de retardo de tiempo (TDC) es una estrategia bien conocida utilizada para la estimación de incertidumbres del sistema. Basado en la suposición de que una señal continua permanece sin cambios durante un período lo suficientemente pequeño, TDC emplea la observación pasada de la función que representa el efecto de las incertidumbres y perturbaciones de modo que la estimación se usa para modificar la acción de control directamente, en lugar de ajustar las ganancias del controlador\cite{11}.
+
+
+El control de retardo de tiempo (TDC),  utilizar de forma intencionada y razonable el retardo de tiempo existente en las tareas del controlador, para mejorar el rendimiento del sistema. Se compone principalmente de filtro de retardo de tiempo (TDF), observador de retardo de tiempo (TDO) y control de aprendizaje de retardo de tiempo (TDL). El filtro de retardo de tiempo, que utiliza retardo para atenuar o eliminar las señales sinusoidales exponenciales amortiguadas, se aplica principalmente para reducir la vibración residual de estructuras flexibles. El observador de retardo de tiempo es un método de control robusto que utiliza el retardo de tiempo para observar las incertidumbres y perturbaciones. El control de aprendizaje de retardo de tiempo, utilizando retardo para aprender la señal periódica, se aplica para rastrear la señal periódica sin error\cite{12}.
+
+Time Delay Control (TDC),  no depende de la estimación de parámetros específicos, control discontinuo ni acciones repetitivas. Más bien, depende de la estimación directa de una función que representa el efecto de las incertidumbres. Esto se logra usando un retraso de tiempo. La información recopilada se utiliza para cancelar la dinámica desconocida y las perturbaciones inesperadas simultáneamente. Luego, el controlador inserta la dinámica deseada en la planta. En otras palabras, el TDC utiliza la observación anterior de la respuesta del sistema y la entrada de control para modificar directamente las acciones de control en lugar de ajustar las ganancias del controlador o identificar los parámetros del sistema, lo que conduce a un controlador independiente del modelo. Este algoritmo puede hacer frente a grandes variaciones y perturbaciones de parámetros del sistema impredecibles \cite{10}.
+
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.7\textwidth]{TDC.png}
+    \caption{Diagrama de bloque con control TDC}
+    \label{fig:1.4}
+   
+}
+\end{figure} 
+Gracias a su simplicidad y robustez, el control de retardo de tiempo (TDC) ha sido reconocido como una alternativa simple pero efectiva a los controles basados en modelos de robots y/o controles inteligentes\cite{13}. En \cite{13} se presenta una formulación inclusiva y mejorada de TDC para un control robusto de manipuladores de robots. En \cite{14}  proponen y aplica un nuevo algoritmo de control llamado control de modo deslizante de retardo de tiempo (TDSMC), basado en el control de retardo de tiempo (TDC) y el control de modo deslizante integral (SMC), para controlar servos de CC con un sensor instalado en sus ejes giratorios. Este algoritmo adopta la robustez del control del modelo deslizante y mejora la robustez del TDC.
+
+\end{normalsize}
+
+\subsection{Estimador de incertidumbre y perturbación(uncertaintyand disturbance estimator-UDE)}
+\begin{normalsize}
+El enfoque de control basado en el estimador de incertidumbre y perturbaciones (UDE) se propuso como reemplazo del TDC\cite{15}. La técnica UDE se basa en el supuesto de que una señal continua se puede aproximar cuando pasa por un filtro apropiado. Mientras que TDC utiliza una suposición en el dominio del tiempo, UDE se formula en el dominio de la frecuencia\cite{11}. Se abordan los dos inconvenientes inherentes del TDC, a saber, que no hay necesidad de medir la derivada de los estados y no hay oscilación en la señal de control. Además, un beneficio adicional es que se elimina el retardo. La estabilidad del sistema se analiza más fácilmente. Además de todas estas ventajas, el rendimiento del sistema es muy similar al obtenido con TDC\cite{15}.Por esta razón, la estrategia de control basada en UDE se ha aplicado con éxito a sistemas de control robustos\cite{11}.
+
+
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.7\textwidth]{UDE.png}
+    \caption{Diagrama de bloque con control UDE}
+    \label{fig:1.5}
+   
+}
+\end{figure} 
+\end{normalsize}
+
+
+\subsection{Controladores con actualización de la señal de Control }
+
+El diseño de controladores digitales no debe limitarse al caso más simple con estrategias de muestreo síncronas, donde la implementación digital debe tener en cuenta el entorno operativo en tiempo real.
+
+En \cite{16} analizan los modelos de control del espacio de estados con el fin de identificar las propiedades de tiempo que pueden favorecer la programación flexible de las tareas de control en tiempo real. Donde, a partir del modelo de espacio de estados de un sistema de control de tiempo discreto invariante en el tiempo lineal con retardo de tiempo, obtenemos un nuevo modelo que implica calcular la señal de control con un vector de estado estimado en el instante de actuación. 
+
+Además, al permitir instantes de muestreo irregulares, mostramos que el nuevo modelo solo fuerza un único punto de sincronización (instante de actuación) mientras tiene una implementación factible. Esto augura una mejor capacidad de programación para un conjunto de tareas de control en tiempo real y puede proporcionar robustez frente a las fluctuaciones inducidas por la programación\cite{16}. 
+
+
+En lugar de aplicar controladores estándar, se puede aplicar un controlador con señal de control actualizada para tener en cuenta el retraso como proponen en \cite{1}. En lugar de que el cálculo de la señal de control con un vector de estado se vuelva obsoleto en el momento en que se aplica la señal de control, se utiliza un vector de estado actualizado(estimado). Por lo tanto, se calcula la señal de control en términos del estado estimado.
+
+\begin{figure}[H]{
+
+    \centering
+    \includegraphics[width=0.7\textwidth]{ControlActualizado.png}
+    \caption{Controlador con actualización de la señal de control}
+    \label{fig:1.6}
+}
+\end{figure}
+
+ Desde la perspectiva del tiempo real, aceptar el muestreo irregular tiene dos ventajas principales. Puede eliminar la degradación introducida por las fluctuaciones y puede mejorar la capacidad de programación (dado que las liberaciones de tareas se pueden realizar antes)\cite{16}.
+
+Al compensar las fluctuaciones de latencia mediante el ajuste de los parámetros de tiempo en el controlador, se  puede mejorar tanto el rendimiento del control como la programación del conjunto de tareas que realiza el computador. Además  se asume  sincronización  en los  instantes  de  actuación,  en  lugar  de  los  instantes  de  muestreo como se supone en un controlador estándar.
+
+
+
+
+
+
+
+
+
+
+
+
+
+%@article{8,
+%%author = {C.L.Liu ans J.W. Layland},
+%isbn = {0000000000000},
+%pages = {1551--1556},
+%title = {Scheduling Algorithms for Multiprogramming
+%in a Hard-Real-Time Environment},
+%year = {2003}
+%}
+
+%@article{9,
+%author = {Mart{\'{i}}, Pau and Fuertes, Josep M. and Fohler, Gerhard %and Ramamritham, Krithi},
+%issn = {10528725},
+%journal = {Proceedings - Real-Time Systems Symposium},
+%number = {January},
+%pages = {39--48},
+%title = {{Jitter compensation for real-time control systems}},
+%year = {2001}
+%}
+
+
+
+@article{10,
+author = {Youcef-Toumi, Kamal and Ito, Osamu},
+doi = {10.1115/1.2894130},
+file = {:home/of/Descargas/youcef-toumi1990.pdf:pdf},
+issn = {15289028},
+journal = {Journal of Dynamic Systems, Measurement and Control, Transactions of the ASME},
+number = {1},
+pages = {133--142},
+title = {{A time delay controller for systems with unknown dynamics}},
+volume = {112},
+year = {1990}
+}
+
+
+@article{11,
+author = {Nam, Yun Joo},
+doi = {10.1109/ICCAS.2016.7832415},
+isbn = {9788993215120},
+issn = {15987833},
+journal = {International Conference on Control, Automation and Systems},
+keywords = {Robust Control,Time Delay Control (TDC),Uncertainty and Disturbance Estimation (UDE)},
+number = {Iccas},
+pages = {749--756},
+title = {{Comparison study of time delay control (TDC) and uncertainty and disturbance estimation (UDE) based control}},
+volume = {0},
+year = {2016}
+}
+
+@article{12,
+author = {Zhong, Qingchang and Xie, Jianying},
+year = {2002},
+month = {08},
+pages = {},
+title = {Time delay control and its applications},
+volume = {19},
+journal = {Control Theory and Applications}
+}
+
+@article{13,
+author = {Jin, Maolin and Kang, Sang Hoon and Chang, Pyung Hun and Lee, Jinoh},
+doi = {10.1109/TMECH.2017.2718108},
+issn = {10834435},
+journal = {IEEE/ASME Transactions on Mechatronics},
+number = {5},
+pages = {2141--2152},
+title = {{Robust Control of Robot Manipulators Using Inclusive and Enhanced Time Delay Control}},
+volume = {22},
+year = {2017}
+}
+
+@article{14,
+author = {Park, Jong Hyeon and Kim, You Moo},
+doi = {10.1115/1.2802434},
+issn = {15289028},
+journal = {Journal of Dynamic Systems, Measurement and Control, Transactions of the ASME},
+number = {1},
+pages = {143--148},
+title = {{Time-delay sliding mode control for a servo}},
+volume = {121},
+year = {1999}
+}
+
+@article{15,
+author = {Zhong, Qing Chang and Rees, David},
+doi = {10.1115/1.1850529},
+issn = {00220434},
+journal = {Journal of Dynamic Systems, Measurement and Control, Transactions of the ASME},
+keywords = {Interval Plants,Parametric Uncertainty,Robust Control,Time Delay Control (TDC),Uncertainty and Disturbance Estimator (UDE)},
+number = {4},
+pages = {905--910},
+title = {{Control of uncertain LTI systems based on an uncertainty and disturbance estimator}},
+volume = {126},
+year = {2004}
+}
+
+@article{16,
+author = {Mart{\'{i}}, Pau and Velasco, Manel},
+doi = {10.1007/978-3-540-71493-4_67},
+file = {:home/of/Descargas/10.1.1.164.4169.pdf:pdf},
+isbn = {9783540714927},
+issn = {16113349},
+journal = {Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics)},
+pages = {710--713},
+title = {{Toward flexible scheduling of real-time control tasks: Reviewing basic control models}},
+volume = {4416 LNCS},
+year = {2007}
+}
+
+
+
